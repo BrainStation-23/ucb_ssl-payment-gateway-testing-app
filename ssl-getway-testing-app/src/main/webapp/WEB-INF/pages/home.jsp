@@ -51,7 +51,7 @@
                 <div class="row col-lg-12">
                     <%--<div class="col-lg-2"></div>--%>
                         <h4>Payment Gateway Form</h4>
-                        <form:form action="http://172.16.228.128:9080/merchant/login" modelAttribute="paymentGatewayModelRequest" method="post">
+                        <form:form action="http://localhost:9080/merchant/login" modelAttribute="paymentGatewayModelRequest" method="post">
                             <div class="form-group">
                                 <label for="merchantKey">Merchant Key:<span style="color: #F00;">*</span></label>
                                 <form:input type="text" cssClass="form-control" path="merchantKey" readonly="true"></form:input>

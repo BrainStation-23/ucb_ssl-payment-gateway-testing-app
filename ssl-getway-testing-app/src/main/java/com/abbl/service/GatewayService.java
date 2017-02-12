@@ -21,7 +21,7 @@ public class GatewayService {
 
     //Constant
     private final String BS_URL= "http://localhost:8080";
-    private final String WEB_BS_URL= "http://localhost:9090";
+    private final String WEB_BS_URL= "http://localhost:9080";
 
     //DI
     @Autowired

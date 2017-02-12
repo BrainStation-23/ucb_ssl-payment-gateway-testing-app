@@ -1,25 +1,25 @@
 package com.abbl.controller;
 
-import com.abbl.model.User;
 import com.abbl.model.requestmodel.PaymentGatewayModelRequest;
 import com.abbl.model.requestmodel.PaymentGatewayReturnRequest;
-import com.abbl.model.requestmodel.gateway.GatewayAccessTokenRequest;
 import com.abbl.model.requestmodel.gateway.GatewayPaymentVerifyRequest;
-import com.abbl.model.responsemodel.GatewayAccessToken;
 import com.abbl.model.responsemodel.GatewayAccessTokenResponse;
 import com.abbl.model.responsemodel.PaymentDetailsResponse;
-import com.abbl.model.responsemodel.PaymentGatewayModelResponse;
 import com.abbl.model.viewmodel.GatewayAccessTokenViewModel;
 import com.abbl.service.GatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by nasir on 12/22/16.
@@ -67,10 +67,11 @@ public class HomeController {
             session.setAttribute("merchantKey", gatewayAccessTokenResponse.getItems().getMerchantKey());
             PaymentGatewayModelRequest paymentGatewayModelRequest = new PaymentGatewayModelRequest();
             paymentGatewayModelRequest.setProductName("Rice");
-            paymentGatewayModelRequest.setProductPrice(20);
+            paymentGatewayModelRequest.setProductPrice(1);
+            paymentGatewayModelRequest.setSSLRefId("AB00001010");
             paymentGatewayModelRequest.setMerchantName("My Merchant");
             paymentGatewayModelRequest.setMerchantKey(gatewayAccessTokenResponse.getItems().getMerchantKey());
-            paymentGatewayModelRequest.setReturnURL("http://172.16.228.57:8090/return/payment/gateway");
+            paymentGatewayModelRequest.setReturnURL("localhost:7080/return/payment/gateway");
             model.addAttribute("paymentGatewayModelRequest", paymentGatewayModelRequest);
             model.addAttribute("status", status);
             model.addAttribute("responseBody", gatewayAccessTokenResponse.getItems().toString());
