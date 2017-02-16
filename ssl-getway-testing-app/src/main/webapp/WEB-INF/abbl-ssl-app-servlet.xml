@@ -24,6 +24,15 @@
         </property>
     </bean>
 
+
+    <bean id="applicationProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+                <value>WEB-INF/config.properties</value>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+
     <!-- resources -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 

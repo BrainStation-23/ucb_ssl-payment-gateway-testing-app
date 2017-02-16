@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--
   Created by IntelliJ IDEA.
   User: nasir
@@ -9,6 +10,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <html lang="en">
     <head>
         <title>SSL Test APP</title>
@@ -51,7 +54,7 @@
                 <div class="row col-lg-12">
                     <%--<div class="col-lg-2"></div>--%>
                         <h4>Payment Gateway Form</h4>
-                        <form:form action="http://localhost:9080/merchant/login" modelAttribute="paymentGatewayModelRequest" method="post">
+                        <form:form action="${weburl}/merchant/login" modelAttribute="paymentGatewayModelRequest" method="post" target="_blank">
                             <div class="form-group">
                                 <label for="merchantKey">Merchant Key:<span style="color: #F00;">*</span></label>
                                 <form:input type="text" cssClass="form-control" path="merchantKey" readonly="true"></form:input>

@@ -11,6 +11,7 @@ import com.abbl.model.responsemodel.PaymentDetailsResponse;
 import com.abbl.model.responsemodel.PaymentGatewayModelResponse;
 import com.abbl.model.viewmodel.GatewayAccessTokenViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,15 +21,19 @@ import org.springframework.stereotype.Service;
 public class GatewayService {
 
     //Constant
-    private final String BS_URL= "http://localhost:8080";
-    private final String WEB_BS_URL= "http://localhost:9080";
+
+    @Value("${bs.service.url}")
+    private String BS_SERVICE_URL;
+
+    @Value("${bs.web.url}")
+    private String BS_WEB_URL;
 
     //DI
     @Autowired
     private ABBLEncryptor abblEncryptor;
 
     public GatewayAccessTokenResponse getGatewayAccessToken(GatewayAccessTokenViewModel gatewayAccessTokenViewModel){
-        String requestUrl = BS_URL + "/payment/gateway/access/token";
+        String requestUrl = BS_SERVICE_URL + "/payment/gateway/access/token";
 
         GatewayAccessTokenRequest request = getGatewayViewToRequestModel(gatewayAccessTokenViewModel);
         BSRestTemplate<GatewayAccessTokenResponse> restTemplate = new BSRestTemplate<GatewayAccessTokenResponse>();
@@ -36,7 +41,7 @@ public class GatewayService {
     }
 
     public PaymentDetailsResponse getPaymentDetailsResponse(GatewayPaymentVerifyRequest request){
-        String requestUrl = BS_URL + "/payment/verify";
+        String requestUrl = BS_SERVICE_URL + "/payment/verify";
 
         BSRestTemplate<PaymentDetailsResponse> restTemplate = new BSRestTemplate<PaymentDetailsResponse>();
         return restTemplate.postWithModelWithoutHeader(requestUrl, request, PaymentDetailsResponse.class);
@@ -52,7 +57,7 @@ public class GatewayService {
     }
 
     public void sendPaymentGatewayModelRequest(PaymentGatewayModelRequest paymentGatewayModelRequest){
-        String requestUrl = WEB_BS_URL + "/merchant/login";
+        String requestUrl = BS_WEB_URL + "/merchant/login";
 
         PaymentGatewayModelRequest request = new PaymentGatewayModelRequest();
         BSRestTemplate<PaymentGatewayModelResponse> restTemplate = new BSRestTemplate<PaymentGatewayModelResponse>();
