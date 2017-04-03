@@ -42,6 +42,9 @@ public class HomeController {
     @Value("${bs.web.url}")
     private String BS_WEB_URL;
 
+    @Value("${bs.ssl.ip}")
+    private String SSL_TEST_IP;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getHome(Model model, HttpSession session){
         model.addAttribute("gatewayDto", new GatewayAccessTokenViewModel());
@@ -86,12 +89,9 @@ public class HomeController {
             paymentGatewayModelRequest.setSSLRefId("AB00001010");
             paymentGatewayModelRequest.setMerchantName("My Merchant");
             paymentGatewayModelRequest.setMerchantKey(gatewayAccessTokenResponse.getItems().getMerchantKey());
+            paymentGatewayModelRequest.setMerchantIPAddress(SSL_TEST_IP);
+            paymentGatewayModelRequest.setReturnURL(BS_SSL_TEST_APP + "/return/payment/gateway");
 
-            if(request.getRemoteAddr().contains("http")) {
-                paymentGatewayModelRequest.setReturnURL(request.getRemoteAddr() + "/return/payment/gateway");
-            } else {
-                paymentGatewayModelRequest.setReturnURL("http://" + request.getRemoteAddr() + ":6080/return/payment/gateway");
-            }
             model.addAttribute("paymentGatewayModelRequest", paymentGatewayModelRequest);
             model.addAttribute("status", status);
             model.addAttribute("responseBody", gatewayAccessTokenResponse.getItems().toString());
@@ -150,7 +150,7 @@ public class HomeController {
             paymentDetailsResponse = gatewayService.getPaymentDetailsResponse(gatewayPaymentVerifyRequest);
         }
 
-        System.out.println(""+ paymentDetailsResponse.toString());
+//        System.out.println(""+ paymentDetailsResponse.getItems());
         session = addAndGetSession(session, status);
 
         List<String> statusListRight = getStatusList("" + session.getAttribute("statusList"));

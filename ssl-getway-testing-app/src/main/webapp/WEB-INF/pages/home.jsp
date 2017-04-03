@@ -54,7 +54,7 @@
                 <div class="row col-lg-12">
                     <%--<div class="col-lg-2"></div>--%>
                         <h4>Payment Gateway Form</h4>
-                        <form:form action="${weburl}/merchant/login" modelAttribute="paymentGatewayModelRequest" method="post" target="_blank">
+                        <form:form action="${pageContext.request.contextPath}/send/payment/gateway" modelAttribute="paymentGatewayModelRequest" method="post" target="_blank">
                             <div class="form-group">
                                 <label for="merchantKey">Merchant Key:<span style="color: #F00;">*</span></label>
                                 <form:input type="text" cssClass="form-control" path="merchantKey" readonly="true"></form:input>
@@ -83,6 +83,7 @@
                                 <label for="merchantIMG_url">Merchant Image Url:</label>
                                 <form:input cssClass="form-control" path="merchantIMG_url" placeholder="Merchant Imgae Url"></form:input>
                             </div>
+                            <form:hidden path="merchantIPAddress" ></form:hidden>
                             <button type="submit" class="btn btn-default" style="float: right">Submit</button>
                         </form:form>
                     </div>

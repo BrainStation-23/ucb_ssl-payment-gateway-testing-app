@@ -12,6 +12,7 @@ public class PaymentGatewayModelRequest {
     private String returnURL;
     private String merchantName;
     private String merchantIMG_url;
+    private String merchantIPAddress;
 
     public String getMerchantKey() {
         return merchantKey;
@@ -67,5 +68,13 @@ public class PaymentGatewayModelRequest {
 
     public void setMerchantIMG_url(String merchantIMG_url) {
         this.merchantIMG_url = merchantIMG_url;
+    }
+
+    public String getMerchantIPAddress() {
+        return merchantIPAddress;
+    }
+
+    public void setMerchantIPAddress(String merchantIPAddress) {
+        this.merchantIPAddress = merchantIPAddress;
     }
 }
