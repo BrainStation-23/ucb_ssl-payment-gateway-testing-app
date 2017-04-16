@@ -30,6 +30,7 @@
         </div>
         <div class="container" style="margin-top: 10px">
             <div class="navigation-bar">
+                <a class="btn btn-danger" target="_blank" href="${pageContext.request.contextPath}/paymentStatus" id="paymentStatus" title="Be careful while click on this">Payment Status</a>
                 <a class="btn btn-primary" href="${pageContext.request.contextPath}/true">Reset SSL for New Transaction</a>
                 <c:if test="${not empty responseBody}"><a class="btn btn-primary"  href="#responseBody">Response Body</a></c:if>
                 <c:if test="${not empty requestBody}"><a class="btn btn-primary" href="#requestBody">Request Body</a></c:if>
@@ -54,7 +55,7 @@
                 <div class="row col-lg-12">
                     <%--<div class="col-lg-2"></div>--%>
                         <h4>Payment Gateway Form</h4>
-                        <form:form action="${pageContext.request.contextPath}/send/payment/gateway" modelAttribute="paymentGatewayModelRequest" method="post" target="_blank">
+                        <form:form action="${weburl}/merchant/login" modelAttribute="paymentGatewayModelRequest" method="post" target="_blank">
                             <div class="form-group">
                                 <label for="merchantKey">Merchant Key:<span style="color: #F00;">*</span></label>
                                 <form:input type="text" cssClass="form-control" path="merchantKey" readonly="true"></form:input>
@@ -182,6 +183,43 @@
                 });
             </script>
         </c:if>
+
+        <div class="modal fade" id="paymentModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #8c8c8c; color: white">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title center">Payment Status</h3>
+                    </div>
+                    <div class="modal-body">
+                        <c:choose>
+                            <c:when test="${not empty paymentStatus}">
+                                <p>Status Code: ${paymentStatus.statusCode}</p>
+                                <p>Accont Holder Name: ${paymentStatus.accountHolderName}</p>
+                                <p>Transaction Reference: ${paymentStatus.transactionReference}</p>
+                                <p>SSL Ref. Id: ${paymentStatus.SSLRefId}</p>
+                                <p>Paid Amount: ${paymentStatus.paidAmount}</p>
+                                <p>Error Reason: ${paymentStatus.errorReason}</p>
+                            </c:when>
+                            <c:otherwise>
+                                <h3 style="text-align: center">No Payment Status Found</h3>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <a href="#" class="scrollToTop"></a>
+
+        <c:if test="${view}">
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#paymentModal').modal('show');
+                });
+            </script>
+        </c:if>
     </body>
 </html>

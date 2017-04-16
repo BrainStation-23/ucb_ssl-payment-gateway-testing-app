@@ -2,6 +2,7 @@ package com.abbl.service;
 
 import com.abbl.common.BSRestTemplate;
 import com.abbl.crypto.ABBLEncryptor;
+import com.abbl.model.requestmodel.PaymentDetails;
 import com.abbl.model.requestmodel.PaymentGatewayModelRequest;
 import com.abbl.model.requestmodel.gateway.GatewayAccessTokenRequest;
 import com.abbl.model.requestmodel.gateway.GatewayPaymentVerifyRequest;
@@ -31,6 +32,8 @@ public class GatewayService {
     //DI
     @Autowired
     private ABBLEncryptor abblEncryptor;
+
+    private PaymentDetails paymentDetails;
 
     public GatewayAccessTokenResponse getGatewayAccessToken(GatewayAccessTokenViewModel gatewayAccessTokenViewModel){
         String requestUrl = BS_SERVICE_URL + "/payment/gateway/access/token";
@@ -62,5 +65,13 @@ public class GatewayService {
         PaymentGatewayModelRequest request = new PaymentGatewayModelRequest();
         BSRestTemplate<PaymentGatewayModelResponse> restTemplate = new BSRestTemplate<PaymentGatewayModelResponse>();
         restTemplate.postWithModelWithoutHeader(requestUrl, paymentGatewayModelRequest, PaymentGatewayModelResponse.class);
+    }
+
+    public PaymentDetails getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails(PaymentDetails paymentDetails) {
+        this.paymentDetails = paymentDetails;
     }
 }

@@ -1,6 +1,7 @@
 package com.abbl.controller;
 
 import com.abbl.common.Response;
+import com.abbl.model.requestmodel.PaymentDetails;
 import com.abbl.model.requestmodel.PaymentGatewayModelRequest;
 import com.abbl.model.requestmodel.PaymentGatewayReturnRequest;
 import com.abbl.model.requestmodel.gateway.GatewayPaymentVerifyRequest;
@@ -45,6 +46,7 @@ public class HomeController {
     @Value("${bs.ssl.ip}")
     private String SSL_TEST_IP;
 
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getHome(Model model, HttpSession session){
         model.addAttribute("gatewayDto", new GatewayAccessTokenViewModel());
@@ -55,6 +57,17 @@ public class HomeController {
         List<String> statusListRight = getStatusList("" + session.getAttribute("statusList"));
         model.addAttribute("statusListRight", statusListRight);
         model.addAttribute("weburl", BS_WEB_URL);
+        return "home";
+    }
+
+    @RequestMapping(value = "/paymentStatus", method = RequestMethod.GET)
+    public String getPaymentStatus(Model model, HttpSession session){
+        model.addAttribute("gatewayDto", new GatewayAccessTokenViewModel());
+        List<String> statusListRight = getStatusList("" + session.getAttribute("statusList"));
+        model.addAttribute("statusListRight", statusListRight);
+        model.addAttribute("weburl", BS_WEB_URL);
+        model.addAttribute("paymentStatus", gatewayService.getPaymentDetails());
+        model.addAttribute("view", true);
         return "home";
     }
 
@@ -89,8 +102,8 @@ public class HomeController {
             paymentGatewayModelRequest.setSSLRefId("AB00001010");
             paymentGatewayModelRequest.setMerchantName("My Merchant");
             paymentGatewayModelRequest.setMerchantKey(gatewayAccessTokenResponse.getItems().getMerchantKey());
-            paymentGatewayModelRequest.setMerchantIPAddress(SSL_TEST_IP);
             paymentGatewayModelRequest.setReturnURL(BS_SSL_TEST_APP + "/return/payment/gateway");
+            paymentGatewayModelRequest.setMerchantIPAddress(SSL_TEST_IP);
 
             model.addAttribute("paymentGatewayModelRequest", paymentGatewayModelRequest);
             model.addAttribute("status", status);
@@ -156,11 +169,13 @@ public class HomeController {
         List<String> statusListRight = getStatusList("" + session.getAttribute("statusList"));
         model.addAttribute("statusListRight", statusListRight);
         model.addAttribute("gatewayDto", new GatewayAccessTokenViewModel());
+        session.setAttribute("paymentStatus", paymentDetailsResponse.getItems());
+        gatewayService.setPaymentDetails(paymentDetailsResponse.getItems());
 
         model.addAttribute("weburl", BS_WEB_URL);
         return "home";
     }
-    @RequestMapping(value = "/return/payment/gateway/varify", method = RequestMethod.POST)
+    @RequestMapping(value = "/return/payment/gateway/verify", method = RequestMethod.POST)
     public String postPaymentGatewayFinishedResponse(@ModelAttribute("gatewayPaymentVerifyRequest") GatewayPaymentVerifyRequest gatewayPaymentVerifyRequest, Model model, HttpSession session){
 
         PaymentDetailsResponse paymentDetailsResponse = gatewayService.getPaymentDetailsResponse(gatewayPaymentVerifyRequest);
@@ -187,6 +202,7 @@ public class HomeController {
         model.addAttribute("gatewayDto", new GatewayAccessTokenViewModel());
 
         model.addAttribute("weburl", BS_WEB_URL);
+        model.addAttribute("paymentDetails", paymentDetailsResponse.getItems());
         return "home";
 
     }
