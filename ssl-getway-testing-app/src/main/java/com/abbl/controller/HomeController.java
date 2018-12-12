@@ -115,7 +115,7 @@ public class HomeController {
         }
 
         int i=0;
-        for(String str : gatewayAccessTokenResponse.getErrors()){
+        for(String str : gatewayAccessTokenResponse.getResponseMessages()){
             status = status + "<br>err "+(++i)+":"+str;
         }
 
@@ -202,7 +202,7 @@ public class HomeController {
         }
 
         int i=0;
-        for(String str : paymentDetailsResponse.getErrors()){
+        for(String str : paymentDetailsResponse.getResponseMessages()){
             status = status + "<br>err "+(++i)+":"+str;
         }
 

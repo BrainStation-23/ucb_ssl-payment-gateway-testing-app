@@ -12,10 +12,10 @@ import java.util.List;
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class BaseModel {
     private int responseCode;
-    private List<String> errors;
+    private List<String> responseMessages;
 
-    public BaseModel(){
-        errors = new ArrayList<String>();
+    public BaseModel() {
+        this.responseMessages = new ArrayList<String>();
     }
 
     public int getResponseCode() {
@@ -26,11 +26,11 @@ public class BaseModel {
         this.responseCode = responseCode;
     }
 
-    public List<String> getErrors() {
-        return errors;
+    public List<String> getResponseMessages() {
+        return responseMessages;
     }
 
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
+    public void setResponseMessages(List<String> responseMessages) {
+        this.responseMessages = responseMessages;
     }
 }

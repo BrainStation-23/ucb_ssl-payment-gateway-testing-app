@@ -7,13 +7,12 @@ import java.util.List;
  * Created by nasir on 4/13/2014.
  */
 public class BaseResponse {
-    public BaseResponse() {
-        this.errors = new ArrayList<String>();
-    }
-
     private int responseCode;
+    private List<String> responseMessages;
 
-    private List<String> errors;
+    public BaseResponse() {
+        this.responseMessages = new ArrayList<String>();
+    }
 
     public int getResponseCode() {
         return responseCode;
@@ -23,11 +22,11 @@ public class BaseResponse {
         this.responseCode = responseCode;
     }
 
-    public List<String> getErrors() {
-        return errors;
+    public List<String> getResponseMessages() {
+        return responseMessages;
     }
 
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
+    public void setResponseMessages(List<String> responseMessages) {
+        this.responseMessages = responseMessages;
     }
 }
