@@ -102,8 +102,8 @@
                                 <form:input type="text" cssClass="form-control" path="merchantKey" readonly="true"></form:input>
                             </div>
                             <div class="form-group">
-                                <label for="productName">Transaction Reference:</label>
-                                <form:input cssClass="form-control" path="transactionReference" readonly="true"></form:input>
+                                <label for="productName">SSL Transaction Reference:</label>
+                                <form:input cssClass="form-control" path="sslReferenceId" readonly="true"></form:input>
                             </div>
                             <div class="form-group">
                                 <label for="productPrice">Merchant Password:</label>

@@ -3,8 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
                             http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
                             http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                             http://www.springframework.org/schema/context
@@ -40,5 +42,24 @@
     <bean id="jacksonMessageConverter"
           class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
     <bean id="standardPBEStringEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor"/>
+
+    <!--set application properties-->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject">
+            <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                <property name="targetClass" value="java.lang.System"/>
+                <property name="targetMethod" value="getProperties"/>
+            </bean>
+        </property>
+        <property name="targetMethod" value="putAll"/>
+        <property name="arguments">
+            <util:properties>
+                <!--<prop key="javax.net.ssl.trustStore">${application.ssl.trust.store.location}</prop>-->
+                <!--<prop key="javax.net.ssl.trustStorePassword">${application.ssl.trust.store.password}</prop>-->
+                <!--<prop key="javax.net.ssl.trustStoreType">${application.ssl.trust.store.type}</prop>-->
+            </util:properties>
+        </property>
+    </bean>
+    <!--end-->
 
 </beans>

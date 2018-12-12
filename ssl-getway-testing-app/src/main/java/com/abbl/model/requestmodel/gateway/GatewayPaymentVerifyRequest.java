@@ -5,7 +5,7 @@ package com.abbl.model.requestmodel.gateway;
  */
 public class GatewayPaymentVerifyRequest {
     private String merchantKey;
-    private String transactionReference;
+    private String sslReferenceId;
     private String password;
 
     public String getMerchantKey() {
@@ -16,12 +16,12 @@ public class GatewayPaymentVerifyRequest {
         this.merchantKey = merchantKey;
     }
 
-    public String getTransactionReference() {
-        return transactionReference;
+    public String getSslReferenceId() {
+        return sslReferenceId;
     }
 
-    public void setTransactionReference(String transactionReference) {
-        this.transactionReference = transactionReference;
+    public void setSslReferenceId(String sslReferenceId) {
+        this.sslReferenceId = sslReferenceId;
     }
 
     public String getPassword() {

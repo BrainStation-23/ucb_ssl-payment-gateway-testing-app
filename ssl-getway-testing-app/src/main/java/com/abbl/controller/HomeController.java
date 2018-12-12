@@ -142,25 +142,36 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/return/payment/gateway", method = RequestMethod.POST)
-    public @ResponseStatus(HttpStatus.OK)
-    String getPaymentGatewayFinishedResponse(@RequestBody PaymentGatewayReturnRequest request, Model model, HttpSession session){
+    public String getPaymentGatewayFinishedResponse(@ModelAttribute PaymentGatewayReturnRequest request, Model model, HttpSession session){
         PaymentDetailsResponse paymentDetailsResponse = new PaymentDetailsResponse();
         if(request == null){
-            status = "Failed to get Payment complete request!";
+            status = "Failed to get Payment request!";
         } else {
+            if(request.getStatusCode().equals("101")){
+                status = "Successfully get Payment cancel request!";
+                model.addAttribute("requestBody", request.toString());
+                PaymentDetails paymentDetails = new PaymentDetails();
+                paymentDetails.setPaidAmount(request.getPaidAmount());
+                paymentDetails.setSSLRefId(request.getSSLRefId());
+                paymentDetails.setStatusCode(Integer.parseInt(""+request.getStatusCode()));
+                paymentDetailsResponse.setItems(paymentDetails);
 
-            status = "Successfully get Payment complete request!";
-            model.addAttribute("requestBody", request.toString());
+                model.addAttribute("status", status);
 
-            GatewayPaymentVerifyRequest gatewayPaymentVerifyRequest = new GatewayPaymentVerifyRequest();
-            gatewayPaymentVerifyRequest.setMerchantKey("" + merchantKey);
-            gatewayPaymentVerifyRequest.setTransactionReference(request.getTransactionID());
-            gatewayPaymentVerifyRequest.setPassword("" + password);
-            model.addAttribute("status", status);
+            } else {
+                status = "Successfully get Payment complete request!";
+                model.addAttribute("requestBody", request.toString());
 
-            model.addAttribute("gatewayPaymentVerifyRequest", gatewayPaymentVerifyRequest);
+                GatewayPaymentVerifyRequest gatewayPaymentVerifyRequest = new GatewayPaymentVerifyRequest();
+                gatewayPaymentVerifyRequest.setMerchantKey("" + merchantKey);
+                gatewayPaymentVerifyRequest.setSslReferenceId(request.getSSLRefId());
+                gatewayPaymentVerifyRequest.setPassword("" + password);
+                model.addAttribute("status", status);
 
-            paymentDetailsResponse = gatewayService.getPaymentDetailsResponse(gatewayPaymentVerifyRequest);
+                model.addAttribute("gatewayPaymentVerifyRequest", gatewayPaymentVerifyRequest);
+
+                paymentDetailsResponse = gatewayService.getPaymentDetailsResponse(gatewayPaymentVerifyRequest);
+            }
         }
 
 //        System.out.println(""+ paymentDetailsResponse.getItems());
@@ -205,6 +216,37 @@ public class HomeController {
         model.addAttribute("paymentDetails", paymentDetailsResponse.getItems());
         return "home";
 
+    }
+
+    @RequestMapping(value = "/return/payment/gateway", method = RequestMethod.GET)
+    public String getPaymentGatewayCancelResponse(@ModelAttribute PaymentGatewayReturnRequest request, Model model, HttpSession session){
+        PaymentDetailsResponse paymentDetailsResponse = new PaymentDetailsResponse();
+        if(request == null){
+            status = "Failed to get Payment cancel request!";
+        } else {
+
+            status = "Successfully get Payment cancel request!";
+            model.addAttribute("requestBody", request.toString());
+            PaymentDetails paymentDetails = new PaymentDetails();
+            paymentDetails.setPaidAmount(request.getPaidAmount());
+            paymentDetails.setSSLRefId(request.getSSLRefId());
+            paymentDetails.setStatusCode(Integer.parseInt(""+request.getStatusCode()));
+            paymentDetailsResponse.setItems(paymentDetails);
+
+            model.addAttribute("status", status);
+        }
+
+//        System.out.println(""+ paymentDetailsResponse.getItems());
+        session = addAndGetSession(session, status);
+
+        List<String> statusListRight = getStatusList("" + session.getAttribute("statusList"));
+        model.addAttribute("statusListRight", statusListRight);
+        model.addAttribute("gatewayDto", new GatewayAccessTokenViewModel());
+        session.setAttribute("paymentStatus", paymentDetailsResponse.getItems());
+        gatewayService.setPaymentDetails(paymentDetailsResponse.getItems());
+
+        model.addAttribute("weburl", BS_WEB_URL);
+        return "home";
     }
 
     public HttpSession addAndGetSession(HttpSession session, String newStatus){
