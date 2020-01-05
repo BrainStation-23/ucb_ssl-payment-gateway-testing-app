@@ -1,9 +1,11 @@
 package com.abbl.model.requestmodel;
 
+import java.io.Serializable;
+
 /**
  * Created by nasir on 12/27/16.
  */
-public class PaymentGatewayReturnRequest {
+public class PaymentGatewayReturnRequest implements Serializable {
     private String transactionID;
     private String statusCode;
     private String SSLRefId;
