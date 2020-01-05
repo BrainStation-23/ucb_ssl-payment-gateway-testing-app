@@ -7,6 +7,7 @@ public class GatewayPaymentVerifyRequest {
     private String merchantKey;
     private String sslReferenceId;
     private String password;
+    private String transactionReferenceNumber;
 
     public String getMerchantKey() {
         return merchantKey.trim();
@@ -30,5 +31,13 @@ public class GatewayPaymentVerifyRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getTransactionReferenceNumber() {
+        return transactionReferenceNumber;
+    }
+
+    public void setTransactionReferenceNumber(String transactionReferenceNumber) {
+        this.transactionReferenceNumber = transactionReferenceNumber;
     }
 }

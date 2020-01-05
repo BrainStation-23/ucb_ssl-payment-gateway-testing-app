@@ -142,7 +142,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/return/payment/gateway", method = RequestMethod.POST)
-    public String getPaymentGatewayFinishedResponse(@ModelAttribute PaymentGatewayReturnRequest request, Model model, HttpSession session){
+    public String getPaymentGatewayFinishedResponse(@RequestBody PaymentGatewayReturnRequest request, Model model, HttpSession session){
         PaymentDetailsResponse paymentDetailsResponse = new PaymentDetailsResponse();
         if(request == null){
             status = "Failed to get Payment request!";
@@ -166,6 +166,7 @@ public class HomeController {
                 gatewayPaymentVerifyRequest.setMerchantKey("" + merchantKey);
                 gatewayPaymentVerifyRequest.setSslReferenceId(request.getSSLRefId());
                 gatewayPaymentVerifyRequest.setPassword("" + password);
+                gatewayPaymentVerifyRequest.setTransactionReferenceNumber(request.getTransactionID());
                 model.addAttribute("status", status);
 
                 model.addAttribute("gatewayPaymentVerifyRequest", gatewayPaymentVerifyRequest);
