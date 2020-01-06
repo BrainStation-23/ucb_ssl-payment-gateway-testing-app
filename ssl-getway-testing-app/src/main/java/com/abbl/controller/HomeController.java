@@ -142,22 +142,20 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/return/payment/gateway", method = RequestMethod.POST)
-    public String getPaymentGatewayFinishedResponse(@RequestBody PaymentGatewayReturnRequest request, Model model, HttpSession session){
+    public String getPaymentGatewayFinishedResponse(@ModelAttribute PaymentGatewayReturnRequest request, Model model, HttpSession session){
         PaymentDetailsResponse paymentDetailsResponse = new PaymentDetailsResponse();
         if(request == null){
             status = "Failed to get Payment request!";
         } else {
-            if(request.getStatusCode().equals("101")){
-                status = "Successfully get Payment cancel request!";
+            if(request.getStatusCode().equals("104")){
+                status = "Transaction Failed for Unknown Error ";
                 model.addAttribute("requestBody", request.toString());
                 PaymentDetails paymentDetails = new PaymentDetails();
                 paymentDetails.setPaidAmount(request.getPaidAmount());
                 paymentDetails.setSSLRefId(request.getSSLRefId());
                 paymentDetails.setStatusCode(Integer.parseInt(""+request.getStatusCode()));
                 paymentDetailsResponse.setItems(paymentDetails);
-
                 model.addAttribute("status", status);
-
             } else {
                 status = "Successfully get Payment complete request!";
                 model.addAttribute("requestBody", request.toString());
