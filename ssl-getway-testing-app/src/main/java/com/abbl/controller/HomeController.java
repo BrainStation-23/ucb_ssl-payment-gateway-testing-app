@@ -1,6 +1,6 @@
 package com.abbl.controller;
 
-import com.abbl.common.Response;
+import com.abbl.helper.RandomNumberProvider;
 import com.abbl.model.requestmodel.PaymentDetails;
 import com.abbl.model.requestmodel.PaymentGatewayModelRequest;
 import com.abbl.model.requestmodel.PaymentGatewayReturnRequest;
@@ -11,10 +11,12 @@ import com.abbl.model.viewmodel.GatewayAccessTokenViewModel;
 import com.abbl.service.GatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,6 +33,10 @@ public class HomeController {
 
     @Autowired
     private GatewayService gatewayService;
+
+    @Autowired
+    private RandomNumberProvider numberProvider;
+
 
     private String status;
 
@@ -99,7 +105,7 @@ public class HomeController {
             PaymentGatewayModelRequest paymentGatewayModelRequest = new PaymentGatewayModelRequest();
             paymentGatewayModelRequest.setProductName("Rice");
             paymentGatewayModelRequest.setProductPrice(1);
-            paymentGatewayModelRequest.setSSLRefId("AB00001010");
+            paymentGatewayModelRequest.setSSLRefId(numberProvider.generateSSLReferenceId());
             paymentGatewayModelRequest.setMerchantName("My Merchant");
             paymentGatewayModelRequest.setMerchantKey(gatewayAccessTokenResponse.getItems().getMerchantKey());
             paymentGatewayModelRequest.setReturnURL(BS_SSL_TEST_APP + "/return/payment/gateway");
@@ -147,17 +153,15 @@ public class HomeController {
         if(request == null){
             status = "Failed to get Payment request!";
         } else {
-            if(request.getStatusCode().equals("101")){
-                status = "Successfully get Payment cancel request!";
+            if(request.getStatusCode().equals("104")){
+                status = "Transaction Failed for Unknown Error ";
                 model.addAttribute("requestBody", request.toString());
                 PaymentDetails paymentDetails = new PaymentDetails();
                 paymentDetails.setPaidAmount(request.getPaidAmount());
                 paymentDetails.setSSLRefId(request.getSSLRefId());
                 paymentDetails.setStatusCode(Integer.parseInt(""+request.getStatusCode()));
                 paymentDetailsResponse.setItems(paymentDetails);
-
                 model.addAttribute("status", status);
-
             } else {
                 status = "Successfully get Payment complete request!";
                 model.addAttribute("requestBody", request.toString());
